@@ -91,6 +91,8 @@ async def report(ctx):
         f"{answers[2]}\n"
     )
     
+    print(f'{report_message}')
+    
     # Formatar a mensagem como código Markdown
     markdown_report_message = f"```markdown\n{report_message}\n```"
     
@@ -129,12 +131,25 @@ async def esteira(ctx):
         f"### Data de conclusão da esteira:\n{answers[3]}\n\n"
         f"Realizada por: **{user}** "
     )
+    print(f'{esteiraReport}')
     
     # Formatar a mensagem como código Markdown
     markdown_report_message = f"```markdown\n{esteiraReport}\n```"
     
     await user.send("Aqui está o seu relatório em formato Markdown, pronto para ser copiado:")
     await user.send(markdown_report_message)
+    
+@bot.command(name='ajuda')
+async def ajuda(ctx):
+    help_message = (
+        "Olá! Aqui estão os comandos disponíveis:\n\n"
+        "**!report** - Gera um relatório de daily.\n"
+        "**!esteira** - Gera um relatório de esteiras.\n\n"
+        "Ao usar esses comandos, o bot enviará alguns perguntas para montar o seu relatório.\n"
+        "Caso tenha feito várias atividades, use Shift + Enter para dar quebra de linha na resposta para o bot.\n"
+        "Não é preciso formatar a resposta, ele fará isso para você. Não se preocupe com as datas também, elas são incluídas automaticamente. Outro ponto é que toda segunda-feira, o bot pega a data de sexta-feira automaticamente também. Não é necessário se preocupar em atualizar a data na mão. TMJ :saluting_face: \n"
+    )
+    await ctx.author.send(help_message)
 
 # Adicione seu token aqui
 bot.run(TOKEN)
