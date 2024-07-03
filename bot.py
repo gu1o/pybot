@@ -17,6 +17,7 @@ intents.messages = True
 # Inicializa o bot com o prefixo desejado e os intents
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+
 # Evento quando o bot estiver pronto
 @bot.event
 async def on_ready():
