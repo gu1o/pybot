@@ -28,7 +28,7 @@ async def ask_for_input(user, question):
     try:
         message = await bot.wait_for(
             'message',
-            timeout=120.0,
+            timeout=300.0,
             check=lambda message: message.author == user and isinstance(message.channel, discord.DMChannel)
         )
         return message.content
