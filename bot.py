@@ -11,7 +11,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 # Defina os intents
 intents = discord.Intents.default()
-intents.members = True  # Habilite o evento de membros
+intents.members = True
 intents.messages = True
 
 # Inicializa o bot com o prefixo desejado e os intents
@@ -39,7 +39,7 @@ async def ask_for_input(user, question):
 
 # Função para formatar a resposta com quebras de linha
 def format_response_with_bullets(response):
-    lines = response.split('\n')
+    lines = response.split(',')
     formatted_response = '\n'.join(f"- {line.strip()}" for line in lines if line.strip())
     return formatted_response
 
@@ -112,8 +112,7 @@ async def esteira(ctx):
     questions = [
         "Em qual satélite foi feito a esteira?",
         "Qual a palavra foco do satélite?",
-        "Link do doc da esteira",
-        "Data que foi feita"
+        "Link do doc da esteira"
     ]
     
     answers = []
@@ -129,7 +128,6 @@ async def esteira(ctx):
         f"# Relatório - Esteiras {today_str}\n\n"
         f"### Satélite e palavra foco da esteira realizada:\n{answers[0]} - satelite;\n{answers[1]} - palavra foco;\n\n"
         f"### Doc do que foi realizado:\n{answers[2]};\n\n"
-        f"### Data de conclusão da esteira:\n{answers[3]}\n\n"
         f"Realizada por: **{user}** "
     )
     print(f'{esteiraReport}')
@@ -147,10 +145,14 @@ async def ajuda(ctx):
         "**!report** - Gera um relatório de daily.\n"
         "**!esteira** - Gera um relatório de esteiras.\n\n"
         "Ao usar esses comandos, o bot enviará alguns perguntas para montar o seu relatório.\n"
-        "Caso tenha feito várias atividades, use Shift + Enter para dar quebra de linha na resposta para o bot.\n"
+        "Caso tenha feito várias atividades, separe por vírgula (,) o que tiver feito.\n"
         "Não é preciso formatar a resposta, ele fará isso para você. Não se preocupe com as datas também, elas são incluídas automaticamente. Outro ponto é que toda segunda-feira, o bot pega a data de sexta-feira automaticamente também. Não é necessário se preocupar em atualizar a data na mão. TMJ :saluting_face: \n"
     )
     await ctx.author.send(help_message)
+
+@bot.command(name='clear')
+async def(ctx):
+    
 
 # Adicione seu token aqui
 bot.run(TOKEN)
