@@ -150,9 +150,5 @@ async def ajuda(ctx):
     )
     await ctx.author.send(help_message)
 
-@bot.command(name='clear')
-async def(ctx):
-    
-
 # Adicione seu token aqui
 bot.run(TOKEN)
