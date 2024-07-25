@@ -112,7 +112,6 @@ async def esteira(ctx):
         "Em qual satélite foi feito a esteira?",
         "Qual a palavra foco do satélite?",
         "Link do doc da esteira",
-        "Data que foi feita"
     ]
     
     answers = []
@@ -126,10 +125,9 @@ async def esteira(ctx):
     # Formatar relatório
     esteiraReport = (
         f"# Relatório - Esteiras {today_str}\n\n"
-        f"### Satélite e palavra foco da esteira realizada:\n{answers[0]} - satelite;\n{answers[1]} - palavra foco;\n\n"
-        f"### Doc do que foi realizado:\n{answers[2]};\n\n"
-        f"### Data de conclusão da esteira:\n{answers[3]}\n\n"
-        f"Realizada por: **{user}** "
+        f"### :satellite_orbital: Satélite e palavra foco da esteira realizada:\n{answers[0]} - satelite;\n{answers[1]} - palavra foco;\n\n"
+        f"### :page_facing_up: Doc do que foi realizado:\n{answers[2]};\n\n"
+        f":mage_tone1: Realizada por: **{user}** "
     )
     print(f'{esteiraReport}')
     
@@ -147,7 +145,8 @@ async def ajuda(ctx):
         "**!esteira** - Gera um relatório de esteiras.\n\n"
         "Ao usar esses comandos, o bot enviará alguns perguntas para montar o seu relatório.\n"
         "Caso tenha feito várias atividades, use Shift + Enter para dar quebra de linha na resposta para o bot.\n"
-        "Não é preciso formatar a resposta, ele fará isso para você. Não se preocupe com as datas também, elas são incluídas automaticamente. Outro ponto é que toda segunda-feira, o bot pega a data de sexta-feira automaticamente também. Não é necessário se preocupar em atualizar a data na mão. TMJ :saluting_face: \n"
+        "Não é preciso formatar a resposta, ele fará isso para você. Não se preocupe com as datas também, elas são incluídas automaticamente. Outro ponto é que toda segunda-feira, o bot pega a data de sexta-feira automaticamente também. Não é necessário se preocupar em atualizar a data na mão.\n"
+        "Não é pra paquerar o Bot Ricardo. Se fizer isso, eu vou printar o terminal com suas respostas e mandar pro RH. O mesmo vale pro Barros mandando Jesus ou Bolsonaro. TMJ :saluting_face: "
     )
     await ctx.author.send(help_message)
 
