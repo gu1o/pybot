@@ -4,18 +4,20 @@ from dotenv import load_dotenv
 import os
 import asyncio
 from datetime import datetime, timedelta
+import holidays
 
 # Carrega as variáveis de ambiente do arquivo .env e pega o token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-# Defina os intents
+# Define os intents
 intents = discord.Intents.default()
-intents.members = True  # Habilite o evento de membros
+intents.members = True
 intents.messages = True
 
 # Inicializa o bot com o prefixo desejado e os intents
 bot = commands.Bot(command_prefix='!', intents=intents)
+
 
 # Evento quando o bot estiver pronto
 @bot.event
@@ -28,33 +30,45 @@ async def ask_for_input(user, question):
     try:
         message = await bot.wait_for(
             'message',
-            timeout=120.0,
+            timeout=300.0,
             check=lambda message: message.author == user and isinstance(message.channel, discord.DMChannel)
         )
         return message.content
     except asyncio.TimeoutError:
-        await user.send('Você me deixou no vácuo seu Zé cu. Inicia de novo.')
+        await user.send('Você me deixou no vácuo :sob:. Insira o comando novamente.')
         return None
 
 # Função para formatar a resposta com quebras de linha
 def format_response_with_bullets(response):
-    lines = response.split('\n')
+    lines = response.split(',')
     formatted_response = '\n'.join(f"- {line.strip()}" for line in lines if line.strip())
     return formatted_response
 
 # Comando para gerar o relatório
 @bot.command(name='report')
 async def report(ctx):
-    # Envia uma mensagem inicial em DM
+    # Envia uma mensagem inicial
     user = ctx.author
     await user.send("Por favor, responda às próximas perguntas.")
 
     def get_yesterday():
+
+        holiday = holidays.country_holidays("BR", subdiv="SP") #pega feriados nacional e estadual
+        holidays24 = holiday["2024-01-01":"2024-12-31"] #periodo para filtrar
         today = datetime.today()
+        
         if today.weekday() == 0: #0 representa segunda feira
             yesterday = today - timedelta(days=3) #pega a data de sexta
+        
+        elif today.strftime('%Y%m%d') in holidays24:
+            if today.weekday() == 0: #se o feriado for segunda feira
+                yesterday = today - timedelta(days=4) #pega data de sexta
+            else:
+                yesterday = today - timedelta(days=2) #se não, pega o dia anterior do feriado
+
         else:
             yesterday = today - timedelta(days=1) #pega o dia anterior normal
+        
         return yesterday
 
     today = datetime.today()
@@ -91,7 +105,7 @@ async def report(ctx):
         f"{answers[2]}\n"
     )
     
-    print(f'{report_message}')
+    # print(f'{report_message}')
     
     # Formatar a mensagem como código Markdown
     markdown_report_message = f"```markdown\n{report_message}\n```"
@@ -111,7 +125,7 @@ async def esteira(ctx):
     questions = [
         "Em qual satélite foi feito a esteira?",
         "Qual a palavra foco do satélite?",
-        "Link do doc da esteira",
+        "Link do doc da esteira"
     ]
     
     answers = []
@@ -129,9 +143,9 @@ async def esteira(ctx):
         f"### :page_facing_up: Doc do que foi realizado:\n{answers[2]};\n\n"
         f":mage_tone1: Realizada por: **{user}** "
     )
-    print(f'{esteiraReport}')
+    # print(f'{esteiraReport}')
     
-    # Formatar a mensagem como código Markdown
+    # mensagem como código Markdown
     markdown_report_message = f"```markdown\n{esteiraReport}\n```"
     
     await user.send("Aqui está o seu relatório em formato Markdown, pronto para ser copiado:")
@@ -144,9 +158,8 @@ async def ajuda(ctx):
         "**!report** - Gera um relatório de daily.\n"
         "**!esteira** - Gera um relatório de esteiras.\n\n"
         "Ao usar esses comandos, o bot enviará alguns perguntas para montar o seu relatório.\n"
-        "Caso tenha feito várias atividades, use Shift + Enter para dar quebra de linha na resposta para o bot.\n"
-        "Não é preciso formatar a resposta, ele fará isso para você. Não se preocupe com as datas também, elas são incluídas automaticamente. Outro ponto é que toda segunda-feira, o bot pega a data de sexta-feira automaticamente também. Não é necessário se preocupar em atualizar a data na mão.\n"
-        "Não é pra paquerar o Bot Ricardo. Se fizer isso, eu vou printar o terminal com suas respostas e mandar pro RH. O mesmo vale pro Barros mandando Jesus ou Bolsonaro. TMJ :saluting_face: "
+        "Caso tenha feito várias atividades, separe por vírgula (,) o que tiver feito.\n"
+        "Não é preciso formatar a resposta, ele fará isso para você. Não se preocupe com as datas também, elas são incluídas automaticamente. Outro ponto é que toda segunda-feira, o bot pega a data de sexta-feira automaticamente também. Não é necessário se preocupar em atualizar a data na mão. TMJ :saluting_face: \n"
     )
     await ctx.author.send(help_message)
 
